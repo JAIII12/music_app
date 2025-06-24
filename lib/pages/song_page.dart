@@ -8,8 +8,18 @@ class SongPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Consumer<PlaylistProvider>(
-      builder:(context,value, child)=>Scaffold(
+      builder:(context,value, child) {
+
+        //get playlist 
+    final playlist= value.playlist;
+
+    //get current song index
+    final currentSong = playlist[value.currentSongIndex ?? 0];
+
+    //return scaffold UI
+        return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
         child: Padding(
@@ -22,7 +32,7 @@ class SongPage extends StatelessWidget {
                 children: [
                   //back button 
                   IconButton(
-                    onPressed: (){},
+                    onPressed: () => Navigator.pop(context),
                     icon: Icon(Icons.arrow_back),
                   ),
                   //title
@@ -38,21 +48,136 @@ class SongPage extends StatelessWidget {
           
               //album artwork
               NeoBox(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(
-                  "assets/image/akonfreedom.jpg",
-                   ),
-                )),
-          
-              // song duration progress
-          
-             //playback controls
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                      currentSong.albumArtImagePath,
+                       ),
+                    ),
+                    //song and artist name
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      //song and artist name
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            currentSong.songName,
+                             style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          ),
+                          Text(currentSong.artistName,
+                           style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey,
+                          ),
+                          ),
+                        ],
+                      ),
+                  
+                      //heart icon
+                      Icon(Icons.favorite, color: Colors.red, size: 30,),
+                    ],
+                  ),
+                )
+                  ],
+                ),
+                ),
+                
+                const SizedBox(height: 25,),
+
+                // song Duration progress
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          //start Time
+                          Text("0:00", style: TextStyle(fontSize: 16),),
+                      
+                          //shuffle icon
+                          Icon(Icons.shuffle, size: 30,),
+                      
+                          //repeat icon
+                          Icon(Icons.repeat, size: 30,),
+                      
+                          //end time
+                          Text("0:00", style: TextStyle(fontSize: 16),),
+                           ],
+                      ),
+                    ),
+                
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 0),
+                      ),
+                      child: Slider(min: 0,
+                      max: 100,
+                      value: 50,
+                      activeColor: Colors.green,
+                       onChanged: (value) {},
+                       ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 25,),
+
+                //playback controls
+
+                Row(
+                  children: [
+                    //skip previous button
+                    Expanded(
+                       child: GestureDetector(
+                        onTap: (){},
+                        child: NeoBox(child:
+                        Icon(Icons.skip_previous,)),
+                      ),
+                    ),
+
+                    const SizedBox(width: 10,),
+
+
+                    //play pause
+                     Expanded(
+                       child: GestureDetector(
+                        onTap: (){},
+                        child: NeoBox(child:
+                        Icon(Icons.play_arrow,)),
+                      ),
+                    ),
+
+                    const SizedBox(width: 10,),
+
+
+                    //skip forward
+                     Expanded(
+                       child: GestureDetector(
+                        onTap: (){},
+                        child: NeoBox(child:
+                        Icon(Icons.skip_next,)),
+                      ),
+                    ),
+                     ],
+                )
+
             ],
           ),
         ),
-      )
-    ),
+        
+      ),
+    );
+      }
     );
   }
 }

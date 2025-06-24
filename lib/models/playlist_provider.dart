@@ -12,6 +12,8 @@ class PlaylistProvider extends ChangeNotifier {
     albumArtImagePath: "assets/image/akonfreedom.jpg", 
     audioPath: "assets/audio/song1.mp3"),
 
+    
+
   ];
 
   //Current song playing index
