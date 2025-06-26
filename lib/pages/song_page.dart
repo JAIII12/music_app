@@ -6,6 +6,14 @@ import 'package:provider/provider.dart';
 class SongPage extends StatelessWidget {
   const SongPage({super.key});
 
+  //convert duration to string
+  String formattime(Duration duration) {
+    String twoDigitsSeconds = 
+        duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+        String formattedTime ="${duration.inMinutes}:$twoDigitsSeconds";
+        return formattedTime;
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -102,7 +110,7 @@ class SongPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           //start Time
-                          Text(value.currentDuration.toString()),
+                          Text(formattime(value.currentDuration)),
                       
                           //shuffle icon
                           Icon(Icons.shuffle, size: 30,),
@@ -111,7 +119,7 @@ class SongPage extends StatelessWidget {
                           Icon(Icons.repeat, size: 30,),
                       
                           //end time
-                          Text(value.currentDuration.toString()),
+                          Text(formattime(value.totalDuration)),
                            ],
                       ),
                     ),

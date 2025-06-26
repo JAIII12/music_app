@@ -11,9 +11,7 @@ class PlaylistProvider extends ChangeNotifier {
     songName: "Freedom", 
     artistName: "Akon", 
     albumArtImagePath: "assets/image/akonfreedom.jpg", 
-    audioPath: "assets/audio/song1.mp3"),
-
-    
+    audioPath: "assets/audio/freedom.mp3",),
 
   ];
 
@@ -81,17 +79,18 @@ void pauseOrResume() async {
   } else {
     resume();
   }
+  notifyListeners();
 }
 
 //seek to a specific position in current song
 void seek(Duration position) async {
   await _audioPlayer.seek(position);
-  notifyListeners(); 
 }
 
 //play next song
 void playNext() async {
-  if (_currentSongIndex != null && _currentSongIndex! < _playlist.length - 1) {
+  if (_currentSongIndex != null){
+    if (_currentSongIndex! < _playlist.length - 1) {
     _currentSongIndex = _currentSongIndex! + 1;
     // go to next song if next song is not the last song
   } else {
@@ -99,15 +98,21 @@ void playNext() async {
     _currentSongIndex = 0;
   }
   }
+}
 
 //play previous song
 void playPrevious() async {
-  if (_currentDuration.inSeconds>2 && currentSongIndex! > 0) {
-    _currentSongIndex = _currentSongIndex! - 1;
+  //if two seconds have passed restart the current song
+  if (_currentDuration.inSeconds>2) {
+    seek(Duration.zero);
+}
+//if its within the first 2 seconds of the song go to the second song
+else if ( _currentSongIndex! > 0) {
+    currentSongIndex = _currentSongIndex! - 1;
     // go to previous song if previous song is not the first song
   } else {
     //if its the first song, loop back to last song
-    _currentSongIndex = _playlist.length - 1;
+    currentSongIndex = _playlist.length - 1;
   }
 }
 
